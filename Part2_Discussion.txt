@@ -1,0 +1,34 @@
+# Picking a tool:
+We analyzed a particularly negative text from Frankenstein with Textblob, VADER and Flair:
+* Textblob: ['oppressed', 'various misfortunes', 'usual quantity', 'towards', "fiend 's grasp", 'cries rang', 'cloudy sky']
+Sentiment(polarity=0.024999999999999994, subjectivity=0.42500000000000004)
+* NRCLex: {'fear': 0.14705882352941177, 'anger': 0.11764705882352941, 'anticip': 0.0, 'trust': 0.11764705882352941, 'surprise': 0.0, 'positive': 0.17647058823529413, 'negative': 0.14705882352941177, 'sadness': 0.058823529411764705, 'disgust': 0.11764705882352941, 'joy': 0.058823529411764705, 'anticipation': 0.058823529411764705}
+* VADER: {'neg': 0.189, 'neu': 0.779, 'pos': 0.032, 'compound': -0.9539}
+* Flair: NEGATIVE (0.9979)
+* SpaCy: Polarity: 0.024999999999999994, Subjectivity: 0.42500000000000004
+
+We retested SpaCy with a very positive text from Alice in Wonderland to make sure the positive interpretation was not a fluke.
+But even for the very positive text, it only gave a polarity of 0.21, so we decided VADER and Flair were good results.
+VADER ran smoothest and the tutor said it was allowed, so we went with that.
+
+#Grepping sentences with main characters in them
+We created a grep function that would work for each of the books and roughly match sentences in which the 5 main characters per book were mentioned.
+This was tricky because the books have a different writing style: Alice in Wonderland is written in the third person with lots of name references and direct speech, Dracula and Frankenstein contain a lot of retelling in the "I" form. Unfortunately, we only found out that we were allowed to pick just 1 book after we already made the grep, so we decided to stick with it.
+Because the books contain formatting choices and unusual characters, we cleaned them up a little.
+This script could be run over the entire book, but we decided to run it with the chapter files we created in part0. This way, we could use the file names (chapter_0, chapter_1 etc.) as information for later, when we want to aggregate values for entire chapters.
+
+#Doing sentiment Analysis and saving everything
+We made a Vader function to go over the grepped sentences and assign a sentiment value. All the info so far (sentences, value and chapter name) should then be written to a txt file. This way, we can easily perform a sanity check and just look at how the results change if we add more functions or play with the grep.
+
+#Making JSON files
+We wrote a function that would extract only the values for character name, sentiment value and chapter name from each sentence in the txt file. It saves those infos in a JSON file.
+Another function then goes over this JSON file and averages the sentiment values per character and per chapter.
+This might seem redundant, but again, creating 2 files allowed us to perform sanity checks and actually look if the averages were correct and no values were lost. For a more refined script, this middle step could be removed and only the final averaged JSON file created.
+
+#Result
+Running our module results in 3 files:
+*txt file with grepped sentences, sentiment values and chapter names
+*JSON file with only character name, sentiment value and chapter name from each sentence in the txt file
+*JSON file with the average sentiment value for every chapter for each main character
+This works for all 3 of our books and we decided to pick the one with the most interesting results for the further visualisation.
+
