@@ -33,7 +33,7 @@ def grep_sentences(input_folder, output_folder, output_name):
 
     with open(output_file, 'a') as result_file: #open output file
         for filename in os.listdir(input_folder): #iterate over all files in the chapter folder
-            file_path = os.path.join(input_folder, filename) #???
+            file_path = os.path.join(input_folder, filename)
 
             with open(file_path, 'r') as file: #read them
                 file_content = file.read()
