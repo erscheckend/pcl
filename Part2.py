@@ -109,26 +109,28 @@ def save_sentiment_results(output_file_path, output_folder, output_file_name):
             chapter_match = re.search(r'chapter_(\d+)', match.group(2))
             
             if chapter_match:
-                chapter = chapter_match.group(1)
+                chapter = int(chapter_match.group(1))
 
-            entry = {"name": name, "sentiment": sentiment, "chapter": chapter}
+            entry = {"chapter": chapter, "values": [sentiment]}
 
             if name in name_data:
-                name_data[name]["data"].append((entry["sentiment"], entry["chapter"]))
+                existing_entry = next((item for item in name_data[name]["data"] if item["chapter"] == chapter), None)
+                if existing_entry:
+                    existing_entry["values"].append(sentiment)
+                else:
+                    name_data[name]["data"].append(entry)
             else:
-                name_data[name] = {"name": name, "data": [(entry["sentiment"], entry["chapter"])]}
+                name_data[name] = {"name": name, "data": [entry]}
 
     data = list(name_data.values())
-    for entry in data:
-        entry["data"] = sorted(entry["data"], key=lambda x: x[1])  # Sort by chapter
-        entry["data"] = [f"{x[0]}; {x[1]}" for x in entry["data"]]
 
-    output_info_file = os.path.join(output_folder, f"{output_file_name}_info.json")
+    output_info_file = os.path.join(output_folder, f"{output_file_name}_all values.json")
     with open(output_info_file, 'w') as json_file:
         json.dump(data, json_file, indent=2)
-        print('Wrote extracted info to: ' f"{output_file_name}_info.json")
+        print(f'Wrote extracted info to: {output_file_name}_all values.json')
 
     return data
+
 
 def calculate_averages(output_data, output_folder, output_file_name):
     """
@@ -137,16 +139,27 @@ def calculate_averages(output_data, output_folder, output_file_name):
     """
     character_chapter_sum_count = defaultdict(lambda: defaultdict(lambda: {"sum": 0, "count": 0}))
 
-    #Iterate through the extracted data
+    # Iterate through the extracted data
     for entry in output_data:
         name = entry["name"]
         data = entry["data"]
 
-        for sentiment, chapter in [map(float, x.split("; ")) for x in data]:
+        for item in data:
+            chapter = item["chapter"]
+            values = item["values"]
+
+            if isinstance(values, list):
+                if isinstance(values[0], dict):
+                    sentiment = values[0].get("sentiment", 0)
+                else:
+                    sentiment = values[0]
+            else:
+                sentiment = values
+
             character_chapter_sum_count[name][chapter]["sum"] += sentiment
             character_chapter_sum_count[name][chapter]["count"] += 1
 
-    #Calculate averages
+    # Calculate averages
     averages_data = []
     for character_name, character_data in sorted(character_chapter_sum_count.items()):
         character_entry = {"name": character_name, "averages": []}
