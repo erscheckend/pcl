@@ -1,0 +1,34 @@
+# Analysis process for the PCL1 Course Project:
+## Automatic Plot Analysis
+
+###### Group: Mert Erol, Andrea Scheck
+
+# --- Part 3: Visualization:
+For the results from Part 2, we did simple line plots to track the emotions of the main characters across the chapters.
+We also overlapped the line plots and compared these results with the content of the book.
+Additionally, we created box plots which allow us more insight into outliers and the distribution of data in detail.
+For the results from Part 0, we tracked the occurences of positive and negative emotions across the entire book.
+
+# --- Part 4: Reflection and Discussion
+Our learning experience, project insights, and real-world applicability.
+
+a) Learning and Challenges
+* Comparing the results of grep and the more in-depth NLP analysis, what are the key insights?
+The grep for part 0 probably was much better at capturing all occurences, as it was simpler. The more context we had to add (to capture entire sentences with the main character names, the 
+
+* You were asked to visualise both methods. How do they differ?
+
+* Summarize key learnings, focusing on technical skills and literary insights.
+
+* Briefly discuss major challenges and how you addressed them, particularly moving from basic grep searches to advanced NLP.
+
+
+b) Analysis Insights and Real-World Applicability
+* Describe significant insights from the book analysis and how advanced NLP tools enhanced your initial grep findings.
+
+* Reflect on how these techniques and insights could apply in real-world contexts, like social media analysis or other literary works.
+
+
+# --- Feedback
+
+The project was very interesting overall. However the instructions were not given in a  clear way and this led to quite a lot of frustration. For example, in part 1 and 2, we tried to apply our code to all 3 books and only found out quite late that we could have picked just 1. Also, the comparison between the results of part 0 and part 2 in part 3 did not seem sensible because the instructions for creating the results for part 0 were too ambigious. Of course we came up with something to compare, but it really did not feel very worthwile. If we'd been instructed in part 0 to grep the names and sentiments together, we could have avoided this.
